@@ -1,4 +1,5 @@
 # Jingle: IoT-Informed Autoscaling for Efficient Resource Management in Edge Computing
+Yixuan Wang, Abhishek Chandra and Jon Weissman 
 
 Edge computing is increasingly applied to various systems for its proximity to end-users and data sources. To facili-
 tate the deployment of diverse edge-native applications, container technology has emerged as a favored solution due to
