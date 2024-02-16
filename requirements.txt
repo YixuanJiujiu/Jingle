@@ -1,0 +1,6 @@
+kubernetes
+grpcio
+grpcio-tools
+pandas
+statsmodels
+scikit-learn

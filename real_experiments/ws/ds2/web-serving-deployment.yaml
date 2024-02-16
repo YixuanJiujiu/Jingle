@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root--assign-distribute
+  labels:
+    is_workload: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: assign-distribute
+  template:
+    metadata:
+      labels:
+        app: assign-distribute
+    spec:
+      containers:
+        - name: assign-distribute
+          image: yixuannine/assignment-query:latest
+          resources:
+            requests:
+              cpu: 50m
+            limits:
+              cpu: 50m
+          ports:
+            - containerPort: 6000
+

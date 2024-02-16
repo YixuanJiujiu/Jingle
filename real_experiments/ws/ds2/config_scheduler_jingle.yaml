@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: Jinglescheduler
+  labels:
+    app: Jinglescheduler
+spec:
+  backoffLimit: 0
+  manualSelector: true
+  selector:
+    matchLabels:
+      app: Jinglescheduler
+  template:
+    metadata:
+      labels:
+        app: Jinglescheduler
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: Jinglescheduler
+        image: yixuannine/Jinglescheduler:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 200m
+          limits:
+            cpu: 200m
+        ports:
+        - containerPort: 10000
+        command: ["python", "/Jingle/real_experiments/ws/driver.py"]
+        args: ["--policy", "multijingle", "-clus", "kind", "-env", "test2", "-rod", "real"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: Jingle-service
+spec:
+  selector:
+    app: Jinglescheduler
+  ports:
+    - protocol: TCP
+      port: 10000
+      targetPort: 10000

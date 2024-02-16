@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root--coding-assign
+  labels:
+    is_workload: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coding-assign
+  template:
+    metadata:
+      labels:
+        app: coding-assign
+    spec:
+      containers:
+        - name: coding-assign
+          image: yixuannine/coding-assignment
+          resources:
+            requests:
+              cpu: 150m
+            limits:
+              cpu: 150m
+          ports:
+            - containerPort: 6000

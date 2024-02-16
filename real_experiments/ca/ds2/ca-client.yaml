@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca-client
+  labels:
+    Jingle-project: coding-assign
+    app: ca-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      Jingle-project: coding-assign
+      app: ca-client
+  template:
+    metadata:
+      labels: 
+        Jingle-project: coding-assign
+        app: ca-client
+      name: ca-client
+    spec:
+      volumes:
+        - name: log-share
+          emptyDir: {}
+      containers:
+      - name: ca-client
+        image: yixuannine/jinglescheduler:latest
+        volumeMounts:
+          - mountPath: /Jinglelogs/
+            name: log-share
+        command:  ["/bin/sh", "-c"]
+        args:
+          - python /Jingle/worker/workload/run_script.py --logdir /Jinglelogs/ --url http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80/submit --ms coding-assign
+          # - python /driver/wrk_runscript.py --wrk-logdir /Jinglelogs/ --timeout 30000 --wrk-qps 2 --wrk-duration 30 --wrk-num-threads 1 --wrk-num-connections 1 --wrk-url http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80/submit
+        imagePullPolicy: Always
+      - name: jingle-ca-client
+        image: yixuannine/jinglescheduler:latest
+        volumeMounts:
+          - mountPath: /Jinglelogs/
+            name: log-share
+        command: ["/bin/sh", "-c"]
+        args:
+          - python /Jingle/worker/driver/wrk_to_grpc_driver.py --log-folder-path /Jinglelogs/ --grpc-port 10000 --grpc-ip jingle-service.default.svc.cluster.local --grpc-client-id root--coding-assign --poll-frequency 1
+        imagePullPolicy: Always
+
